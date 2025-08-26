@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hi, {{ current_user.username }}!</h1>
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Add Todo</legend>
+                <div class="form-group">
+                    {{ form.content.label(class="form-control-label") }}
+                    {{ form.content(class="form-control form-control-lg") }}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+    <hr>
+    {% for todo in todos %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <small class="text-muted">{{ todo.author.username }}</small>
+            </div>
+            <h2>
+                <a class="article-title" href="#">{{ todo.content }}</a>
+            </h2>
+            <p class="article-content">
+                {% if todo.completed %}
+                    <span class="badge badge-success">Completed</span>
+                {% else %}
+                    <span class="badge badge-warning">Not Completed</span>
+                {% endif %}
+            </p>
+            <a href="{{ url_for('main.complete_todo', todo_id=todo.id) }}">Toggle Complete</a>
+            <a href="{{ url_for('main.delete_todo', todo_id=todo.id) }}">Delete</a>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
